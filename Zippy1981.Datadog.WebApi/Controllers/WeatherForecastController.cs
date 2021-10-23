@@ -27,16 +27,18 @@ namespace Zippy1981.Datadog.WebApi.Controllers
 
         private readonly GraphServiceClient _graphServiceClient;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger,
-                                         GraphServiceClient graphServiceClient)
+        public WeatherForecastController(
+            GraphServiceClient graphServiceClient,
+            ILogger<WeatherForecastController> logger)
         {
              _logger = logger;
             _graphServiceClient = graphServiceClient;
-       }
+        }
 
         [HttpGet]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            _logger.LogInformation("Talking about the weather.");
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             var user = await _graphServiceClient.Me.Request().GetAsync();
 
